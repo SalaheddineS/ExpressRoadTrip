@@ -14,7 +14,7 @@ class Server{
     }
 
     private controllerConfig(){
-        this.app.use('/api',Controllers.CustomerController);
+        this.app.use('/customer',Controllers.CustomerController);
     }
 
 
