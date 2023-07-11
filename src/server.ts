@@ -1,15 +1,20 @@
 import express from 'express';
-import PrismaCli from './dbConfig/prismaSingleton'
+import Controllers from './Controllers';
 class Server{
     private app;
 
     constructor(){
         this.app=express();
-        this.config();
+        this.middlewareConfig();
+        this.controllerConfig();
     }
 
-    private config(){
+    private middlewareConfig(){
         this.app.use(express.json());
+    }
+
+    private controllerConfig(){
+        this.app.use('/api',Controllers.CustomerController);
     }
 
 
@@ -17,11 +22,7 @@ class Server{
         this.app.listen(port,()=>{console.log(`Road Trip Currently Running on localhost:${port}`)})
     }
 
-    public async getTest(){
-        
-        const getProfiles= await PrismaCli.Prisma.profile.findMany();
-        console.log(getProfiles);
-    }
+    
 }
 
 export default Server;

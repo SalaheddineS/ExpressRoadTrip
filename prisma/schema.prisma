@@ -10,7 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Profile {
+model Customer {
   id     Int     @id @default(autoincrement())
-  bio    String
+  name    String
+  mobile  String
+  address String  
+  email  String  @unique
+  password  String  
 }
+
+//use npx prisma migrate dev --name init when changing and npx prisma generate to use as validators
