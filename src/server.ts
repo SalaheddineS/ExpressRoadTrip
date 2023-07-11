@@ -1,6 +1,5 @@
-import * as dotenv from 'dotenv';
-import express, { Express,Request, Response } from 'express';
-
+import express from 'express';
+import PrismaCli from './dbConfig/prismaSingleton'
 class Server{
     private app;
 
@@ -16,6 +15,12 @@ class Server{
 
     public start(port:number){
         this.app.listen(port,()=>{console.log(`Road Trip Currently Running on localhost:${port}`)})
+    }
+
+    public async getTest(){
+        
+        const getProfiles= await PrismaCli.Prisma.profile.findMany();
+        console.log(getProfiles);
     }
 }
 
