@@ -1,11 +1,22 @@
 import * as dotenv from 'dotenv';
 import express, { Express,Request, Response } from 'express';
 
-//Initialize dotenv
-dotenv.config();
-//Initialize express
-const app:Express = express();
-//Initialize JSON parser Middleware
-app.use(express.json());
+class Server{
+    private app;
 
-app.listen(process.env.SERVER_PORT||3000, ()=>{console.log(`the Road Trip server is running on localhost:${process.env.SERVER_PORT||3000}`)});
+    constructor(){
+        this.app=express();
+        this.config();
+    }
+
+    private config(){
+        this.app.use(express.json());
+    }
+
+
+    public start(port:number){
+        this.app.listen(port,()=>{console.log(`Road Trip Currently Running on localhost:${port}`)})
+    }
+}
+
+export default Server;
