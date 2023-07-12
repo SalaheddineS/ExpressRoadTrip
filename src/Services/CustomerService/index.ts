@@ -14,6 +14,9 @@ const addCustomer = async (req: Request, res: Response) => {
         address: address,
         password: hashedPassword,
       },
+      include:{
+        trips:true
+      }
     });
     return res.status(200).json(customer);
   } catch (error) {
