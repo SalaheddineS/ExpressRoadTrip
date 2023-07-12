@@ -3,9 +3,9 @@ import { Router } from "express";
 
 const router = Router();
 
-router.get("/", Services.SubscriptionService.getSubscriptions);
-router.post("/", Services.SubscriptionService.addSubscription);
-router.delete("/:id", Services.SubscriptionService.removeSubscription);
-router.put("/:id", Services.SubscriptionService.updateSubscription);
+router.get("/getSubscriptions", Services.SubscriptionService.getSubscriptions);
+router.post("/addSubscription", Services.SubscriptionService.addSubscription);
+router.delete("deleteSubscription/:id", Services.SubscriptionService.removeSubscription);
+router.put("updateSubscription/:id", Services.SubscriptionService.updateSubscription);
 
 export default router;
