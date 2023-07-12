@@ -1,17 +1,18 @@
 import PrismaCli from "../../dbConfig/prismaSingleton";
 import { Customer } from '@prisma/client'
 import { Request, Response } from 'express';
-
+import passwordHasher from "../../Utils/passwordHasher";
 const addCustomer = async (req:Request,res:Response) => {
     try {
       const { name, email, mobile, address, password } = req.body;
+      const hashedPassword = await passwordHasher(password);
       const customer = await PrismaCli.Prisma.customer.create({
         data: {
           name: name,
           email: email,
           mobile: mobile,
           address: address,
-          password: password,
+          password: hashedPassword,
         }
       });
       return res.status(200).json(customer);
@@ -52,6 +53,7 @@ const updateCustomer = async (req:Request,res:Response)=>{
   try{
     const id:number = parseInt(req.params.id);
     const { name, email, mobile, address, password } = req.body;
+    const hashedPassword = await passwordHasher(password);
     const customer:Customer = await PrismaCli.Prisma.customer.update({
       where:{
         id:id
