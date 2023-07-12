@@ -14,9 +14,10 @@ const addCustomer = async (req: Request, res: Response) => {
         address: address,
         password: hashedPassword,
       },
-      include:{
-        trips:true
-      }
+      include: {
+        trips: true,
+        subscriptions: true,
+      },
     });
     return res.status(200).json(customer);
   } catch (error) {
@@ -27,7 +28,12 @@ const addCustomer = async (req: Request, res: Response) => {
 
 const getCustomers = async (_: Request, res: Response) => {
   try {
-    const allCustomers = await PrismaCli.Prisma.customer.findMany();
+    const allCustomers = await PrismaCli.Prisma.customer.findMany({
+      include: {
+        trips: true,
+        subscriptions: true,
+      },
+    });
     return res.status(200).json(allCustomers);
   } catch (error) {
     console.log("Error getting customers:", error);
@@ -77,7 +83,8 @@ const updateCustomer = async (req: Request, res: Response) => {
 const addTripToCustomer = async (req: Request, res: Response) => {
   const tripId = req.params.tripId;
   const customerId = req.params.customerId;
-  if (!tripId || !customerId) return res.status(400).json({ message: "Invalid tripId or customerId" });
+  if (!tripId || !customerId)
+    return res.status(400).json({ message: "Invalid tripId or customerId" });
   try {
     const customer = await PrismaCli.Prisma.customer.update({
       where: {
@@ -94,9 +101,7 @@ const addTripToCustomer = async (req: Request, res: Response) => {
         trips: true,
       },
     });
-    return res
-      .status(200)
-      .json(customer);
+    return res.status(200).json(customer);
   } catch (error) {
     console.log("Error adding trip to customer:", error);
     throw error;
@@ -105,7 +110,8 @@ const addTripToCustomer = async (req: Request, res: Response) => {
 
 const getCustomerTrips = async (req: Request, res: Response) => {
   const customerId = req.params.customerId;
-  if (!customerId)  return res.status(400).json({ message: "Invalid customerId" });
+  if (!customerId)
+    return res.status(400).json({ message: "Invalid customerId" });
   try {
     const customer = await PrismaCli.Prisma.customer.findUnique({
       where: {
@@ -122,6 +128,36 @@ const getCustomerTrips = async (req: Request, res: Response) => {
   }
 };
 
+const addSubscriptionToCustomer = async (req: Request, res: Response) => {
+  const subscriptionId = req.params.subscriptionId;
+  const customerId = req.params.customerId;
+  if (!subscriptionId || !customerId)
+    return res
+      .status(400)
+      .json({ message: "Invalid subscriptionId or customerId" });
+  try {
+    const customer = await PrismaCli.Prisma.customer.update({
+      where: {
+        id: parseInt(customerId),
+      },
+      data: {
+        subscriptions: {
+          connect: {
+            id: parseInt(subscriptionId),
+          },
+        },
+      },
+      include: {
+        subscriptions: true,
+      },
+    });
+    return res.status(200).json(customer);
+  } catch (error) {
+    console.log("Error adding subscription to customer:", error);
+    throw error;
+  }
+};
+
 export default {
   addCustomer,
   getCustomers,
@@ -129,4 +165,5 @@ export default {
   updateCustomer,
   addTripToCustomer,
   getCustomerTrips,
+  addSubscriptionToCustomer,
 };
