@@ -11,12 +11,33 @@ datasource db {
 }
 
 model Customer {
-  id     Int     @id @default(autoincrement())
-  name    String
-  mobile  String
-  address String  
-  email  String  @unique
-  password  String  
+  id             Int          @id @default(autoincrement())
+  name           String
+  mobile         String
+  address        String
+  email          String       @unique
+  password       String
+  trips          Trip[]  
+  subscriptions  Subscription[] 
+}
+
+model Trip {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  price       Int
+  Date        DateTime
+  customers   Customer[]
+}
+
+model Subscription {
+  id          Int        @id @default(autoincrement())
+  name        String
+  price       Int
+  description String
+  customers   Customer?  @relation(fields: [customersId], references: [id])
+  customersId Int? 
+  
 }
 
 //use npx prisma migrate dev --name init when changing and npx prisma generate to use as validators
