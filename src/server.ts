@@ -1,5 +1,6 @@
 import express from 'express';
 import Controllers from './Controllers';
+import Middlewares from './Middlewares';
 class Server{
     private app;
 
@@ -14,7 +15,7 @@ class Server{
     }
 
     private controllerConfig(){
-        this.app.use('/customer',Controllers.CustomerController);
+        this.app.use('/customer',Middlewares.JWTMiddlewares.isAuthenticated,Controllers.CustomerController);
         this.app.use('/auth',Controllers.AuthController);
     }
 
