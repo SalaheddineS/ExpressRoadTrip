@@ -63,7 +63,7 @@ const updateCustomer = async (req:Request,res:Response)=>{
         email: email,
         mobile: mobile,
         address: address,
-        password: password,
+        password: hashedPassword,
       }
     })
     return res.status(200).json(customer);
