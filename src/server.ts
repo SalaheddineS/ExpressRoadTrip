@@ -15,6 +15,7 @@ class Server{
 
     private controllerConfig(){
         this.app.use('/customer',Controllers.CustomerController);
+        this.app.use('/auth',Controllers.AuthController);
     }
 
 
