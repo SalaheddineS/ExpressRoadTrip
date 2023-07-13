@@ -22,15 +22,6 @@ model Customer {
   roles          Role[]
 }
 
-model Trip {
-  id          Int        @id @default(autoincrement())
-  name        String
-  description String
-  price       Int
-  Date        DateTime
-  customers   Customer[]
-}
-
 model Subscription {
   id          Int        @id @default(autoincrement())
   name        String
@@ -39,6 +30,15 @@ model Subscription {
   customers   Customer?  @relation(fields: [customersId], references: [id])
   customersId Int? 
   
+}
+
+model Trip {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  price       Int
+  Date        DateTime
+  customers   Customer[]
 }
 
 model Role {
