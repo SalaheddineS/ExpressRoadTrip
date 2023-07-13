@@ -21,9 +21,10 @@ class Server{
 
         this.app.use('/subscription',Middlewares.JWTMiddlewares.isAuthenticated,Controllers.SubscriptionController);
         this.app.use('/trip',Middlewares.JWTMiddlewares.isAuthenticated,Controllers.TripController);
-        this.app.use('/customer',Middlewares.JWTMiddlewares.isAuthenticated,Controllers.CustomerController);
+        this.app.use('/customer',Controllers.CustomerController);
+        this.app.use('/role',Middlewares.JWTMiddlewares.isAuthenticated,Controllers.RoleController);
         this.app.use('/auth',Controllers.AuthController);
-
+        
     }
 
 

@@ -19,6 +19,7 @@ model Customer {
   password       String
   trips          Trip[]  
   subscriptions  Subscription[] 
+  roles          Role[]
 }
 
 model Trip {
@@ -38,6 +39,13 @@ model Subscription {
   customers   Customer?  @relation(fields: [customersId], references: [id])
   customersId Int? 
   
+}
+
+model Role {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  customers   Customer[]
 }
 
 //use npx prisma migrate dev --name init when changing and npx prisma generate to use as validators

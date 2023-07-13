@@ -10,5 +10,6 @@ CustomerController.put('/updateCustomer/:id',Services.CustomerService.updateCust
 CustomerController.put('/addTripToCustomer/:tripId/:customerId',Services.CustomerService.addTripToCustomer);
 CustomerController.get('/getCustomerTrips/:customerId',Services.CustomerService.getCustomerTrips);
 CustomerController.put('/addSubscriptionToCustomer/:subscriptionId/:customerId',Services.CustomerService.addSubscriptionToCustomer);
+CustomerController.put('/assignRoleToCustomer/:roleId/:customerId',Services.CustomerService.assignRoleToCustomer);
 
 export default CustomerController;

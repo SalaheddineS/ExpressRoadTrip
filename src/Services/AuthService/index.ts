@@ -16,6 +16,10 @@ const authenticate = async (req:Request,res:Response) => {
             where: 
             {
                 email: email
+            },
+            include:
+            {
+                roles: true
             }
         }
     )
@@ -24,7 +28,7 @@ const authenticate = async (req:Request,res:Response) => {
     const isPasswordValid = await bcrypt.compare(password, Customer.password)
     if(!isPasswordValid) throw new Error("Invalid Password")
     
-    const payload = {id: Customer.id, email: Customer.email, name: Customer.name}
+    const payload = {id: Customer.id, email: Customer.email, name: Customer.name, roles: Customer.roles}
     const JWT = JWTUtils.generateJWT(payload)
     return res.status(200).json({JWT:JWT});
 

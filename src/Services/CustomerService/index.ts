@@ -14,10 +14,6 @@ const addCustomer = async (req: Request, res: Response) => {
         address: address,
         password: hashedPassword,
       },
-      include: {
-        trips: true,
-        subscriptions: true,
-      },
     });
     return res.status(200).json(customer);
   } catch (error) {
@@ -32,6 +28,7 @@ const getCustomers = async (_: Request, res: Response) => {
       include: {
         trips: true,
         subscriptions: true,
+        roles: true,
       },
     });
     return res.status(200).json(allCustomers);
@@ -59,6 +56,7 @@ const removeCustomer = async (req: Request, res: Response) => {
 const updateCustomer = async (req: Request, res: Response) => {
   try {
     const id: number = parseInt(req.params.id);
+    if(!id) return res.status(400).json({message:"Invalid id"});
     const { name, email, mobile, address, password } = req.body;
     const hashedPassword = await passwordHasher(password);
     const customer: Customer = await PrismaCli.Prisma.customer.update({
@@ -158,6 +156,33 @@ const addSubscriptionToCustomer = async (req: Request, res: Response) => {
   }
 };
 
+const assignRoleToCustomer = async (req: Request, res: Response) => {
+  const customerId = req.params.customerId;
+  const roleId = req.params.roleId;
+  if (!customerId || !roleId) return res.status(400).json({ message: "Invalid customerId or roleId" }); 
+  try {
+    const customer = await PrismaCli.Prisma.customer.update({
+      where: {
+        id: parseInt(customerId),
+      },
+      data: {
+        roles: {
+          connect: {
+            id: parseInt(roleId),
+          },
+        },
+      },
+      include: {
+        roles: true,
+      },
+    });
+    return res.status(200).json(customer);
+  } catch (error) {
+    console.log("Error assigning role to customer:", error);
+    throw error;
+  }
+};
+
 export default {
   addCustomer,
   getCustomers,
@@ -166,4 +191,5 @@ export default {
   addTripToCustomer,
   getCustomerTrips,
   addSubscriptionToCustomer,
+  assignRoleToCustomer,
 };
