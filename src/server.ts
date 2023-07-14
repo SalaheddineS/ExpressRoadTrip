@@ -1,6 +1,7 @@
 import express from 'express';
 import Controllers from './Controllers';
 import Middlewares from './Middlewares';
+import {Request,Response} from 'express';
 class Server{
     private app;
 
@@ -24,7 +25,7 @@ class Server{
         this.app.use('/customer',Controllers.CustomerController);
         this.app.use('/role',Middlewares.JWTMiddlewares.isAuthenticated,Controllers.RoleController);
         this.app.use('/auth',Controllers.AuthController);
-        
+        this.app.use('/',(_:Request,res:Response)=>{res.send("<h1>Hello World</h1>")});
     }
 
 

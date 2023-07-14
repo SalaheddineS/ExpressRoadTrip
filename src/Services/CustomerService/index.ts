@@ -173,6 +173,10 @@ const addSubscriptionToCustomer = async (req: Request, res: Response) => {
   }
 };
 
+const getItem = ():string => {
+  return "salah";
+}
+
 const assignRoleToCustomer = async (req: Request, res: Response) => {
   const customerId = req.params.customerId;
   const roleId = req.params.roleId;
